@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class ModalService {
   // visible object is private to prevent other components from accessing it.
-  public visible = false;
+  private visible = false;
 
   constructor() {}
 

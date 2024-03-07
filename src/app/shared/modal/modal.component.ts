@@ -7,10 +7,13 @@ import { NgClass } from '@angular/common';
   standalone: true,
   imports: [AuthModalComponent, NgClass],
   templateUrl: './modal.component.html',
-  styleUrl: './modal.component.css'
+  styleUrl: './modal.component.css',
 })
 export class ModalComponent {
-  constructor(public modal: ModalService) {
+  constructor(public modal: ModalService) {}
+  openModal($event: Event) {
+    $event.preventDefault();
 
+    this.modal.toggleModal();
   }
 }
