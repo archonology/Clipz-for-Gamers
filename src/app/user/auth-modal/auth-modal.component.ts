@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalComponent } from '../../shared/modal/modal.component';
+import { ModalService } from '../../services/modal.service';
 @Component({
   selector: 'app-auth-modal',
   standalone: true,
@@ -8,5 +9,11 @@ import { ModalComponent } from '../../shared/modal/modal.component';
   styleUrl: './auth-modal.component.css'
 })
 export class AuthModalComponent {
+  
+  constructor(public modal: ModalService) { }
 
+  ngOnInit(): void {
+    this.modal.register('auth')
+    this.modal.register('test')
+  }
 }
