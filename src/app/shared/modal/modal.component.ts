@@ -11,9 +11,7 @@ import { NgClass } from '@angular/common';
 })
 export class ModalComponent {
   constructor(public modal: ModalService) {}
-  openModal($event: Event) {
-    $event.preventDefault();
-
+  closeModal() {
     this.modal.toggleModal();
   }
 }
