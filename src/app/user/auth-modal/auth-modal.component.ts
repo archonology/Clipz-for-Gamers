@@ -6,14 +6,12 @@ import { ModalService } from '../../services/modal.service';
   standalone: true,
   imports: [ModalComponent],
   templateUrl: './auth-modal.component.html',
-  styleUrl: './auth-modal.component.css'
+  styleUrl: './auth-modal.component.css',
 })
 export class AuthModalComponent {
-  
-  constructor(public modal: ModalService) { }
+  constructor(public modal: ModalService) {}
 
   ngOnInit(): void {
-    this.modal.register('auth')
-    this.modal.register('test')
+    this.modal.register('auth');
   }
 }
