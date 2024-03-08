@@ -8,9 +8,16 @@ import { AuthModalComponent } from './user/auth-modal/auth-modal.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, NgClass, RouterOutlet, UserModule, NavComponent, AuthModalComponent],
+  imports: [
+    CommonModule,
+    NgClass,
+    RouterOutlet,
+    UserModule,
+    NavComponent,
+    AuthModalComponent,
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'clipz';
