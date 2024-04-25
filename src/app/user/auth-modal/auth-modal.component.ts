@@ -5,12 +5,12 @@ import { TabsContainerComponent } from '../../shared/tabs-container/tabs-contain
 import { TabComponent } from '../../shared/tab/tab.component';
 import { LoginComponent } from '../login/login.component';
 import { RegistrationComponent } from '../registration/registration.component';
-import { ReactiveFormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-auth-modal',
   standalone: true,
-  imports: [ModalComponent, TabsContainerComponent, TabComponent, LoginComponent, RegistrationComponent, ReactiveFormsModule],
+  imports: [ModalComponent, TabsContainerComponent, TabComponent, LoginComponent, RegistrationComponent],
   templateUrl: './auth-modal.component.html',
   styleUrl: './auth-modal.component.css',
 })
