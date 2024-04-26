@@ -21,7 +21,10 @@
     >
       You inputted only
       {{ registerForm.controls.name.errors?.['minlength'].actualLength }}
-      characters. 3 characters is the minimum.
+      characters. <br />
+      It must be
+      {{ registerForm.controls.name.errors?.['minlength'].requiredLength }}
+      characters long.
     </p>
   </div>
   <!-- Email -->
