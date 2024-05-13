@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthModalComponent } from './auth-modal/auth-modal.component';
-import { ReactiveFormsModule } from '@angular/forms';
+// import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { RegistrationComponent } from './registration/registration.component';
 
@@ -13,8 +13,7 @@ import { RegistrationComponent } from './registration/registration.component';
     CommonModule,
     SharedModule,
     AuthModalComponent,
-    RegistrationComponent,
-    ReactiveFormsModule
+    RegistrationComponent
   ],
   exports:[
     AuthModalComponent,

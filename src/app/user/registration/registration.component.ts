@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe, NgIf } from '@angular/common';
+import { InputComponent } from '../../shared/input/input.component';
 
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, NgIf],
+  imports: [ReactiveFormsModule, JsonPipe, NgIf, InputComponent],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css'
 })
