@@ -48,4 +48,7 @@ export class RegistrationComponent {
     confirm_password: this.confirm_password,
     phoneNumber: this.phoneNumber
   })
+  register() {
+    console.log("Submitted!")
+  }
 }

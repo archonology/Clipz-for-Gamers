@@ -1,4 +1,5 @@
-<form [formGroup]="registerForm">
+<!-- ngSubmit will prevent default page reload on enter -->
+<form [formGroup]="registerForm" (ngSubmit)="register()">
   <!-- Name -->
   <div class="mb-3">
     <label class="inline-block mb-2">Name</label>
