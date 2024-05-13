@@ -6,6 +6,10 @@
 />
 <!-- Structural directive keeps things DRY for repeated conditions -->
 <ng-container *ngIf="control.touched && control.dirty">
+  <p *ngIf="control.errors?.['pattern']" class="text-red-400">
+    Passwords must be at least 8 characters long, have 1 uppercase letter, 1,
+    lowercase letter, and 1 number.
+  </p>
   <p class="text-red-400" *ngIf="control.errors?.['required']">
     Field is required.
   </p>
@@ -19,6 +23,10 @@
   <p *ngIf="control.errors?.['email']" class="text-red-400">
     You must enter a valid email.
   </p>
-  <p *ngIf="control.errors?.['min']" class="text-red-400">You aren't old enough to create an account.</p>
-    <p *ngIf="control.errors?.['max']" class="text-red-400">You may be too old to create an account.</p>
+  <p *ngIf="control.errors?.['min']" class="text-red-400">
+    You aren't old enough to create an account.
+  </p>
+  <p *ngIf="control.errors?.['max']" class="text-red-400">
+    You may be too old to create an account.
+  </p>
 </ng-container>
