@@ -2,12 +2,19 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe, NgIf } from '@angular/common';
 import { InputComponent } from '../../shared/input/input.component';
+import { AlertComponent } from '../../shared/alert/alert.component';
 
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, NgIf, InputComponent],
+  imports: [
+    ReactiveFormsModule,
+    JsonPipe,
+    NgIf,
+    InputComponent,
+    AlertComponent
+  ],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css'
 })
@@ -40,6 +47,10 @@ export class RegistrationComponent {
     Validators.maxLength(13)
   ])
 
+  showAlert = false
+  alertMsg = 'Please wait! Your account is being created.'
+  alertColor = 'blue'
+
   registerForm = new FormGroup({
     name: this.name,
     email: this.email,
@@ -49,6 +60,8 @@ export class RegistrationComponent {
     phoneNumber: this.phoneNumber
   })
   register() {
-    console.log("Submitted!")
+    this.showAlert = true
+    this.alertMsg = 'Please wait! Your account is being created.'
+    this.alertColor = 'blue'
   }
 }
