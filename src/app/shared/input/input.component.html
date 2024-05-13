@@ -4,6 +4,7 @@
   class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
   [placeholder]="placeholder"
   [mask]="format"
+  [dropSpecialCharacters]="false"
 />
 <!-- Structural directive keeps things DRY for repeated conditions -->
 <ng-container *ngIf="control.touched && control.dirty">
@@ -14,12 +15,9 @@
   <p class="text-red-400" *ngIf="control.errors?.['required']">
     Field is required.
   </p>
+  <!-- This minLength error message will run for both the name and the phone number, so the message must be nondescript for now -->
   <p class="text-red-400" *ngIf="control.errors?.['minlength']">
-    Only
-    {{ control.errors?.['minlength'].actualLength }}
-    letters inputted. Name must be at least
-    {{ control.errors?.['minlength'].requiredLength }}
-    letters long.
+    Not enough characters inputed.
   </p>
   <p *ngIf="control.errors?.['email']" class="text-red-400">
     You must enter a valid email.

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
-// ngx-mask will be used for masking the phone number field.
+// ngx-mask will be used for input masking the phone number field.
 import { NgxMaskDirective } from 'ngx-mask';
 
 
