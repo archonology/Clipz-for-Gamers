@@ -20,7 +20,12 @@ export class RegistrationComponent {
     Validators.required,
     Validators.email
   ])
-  age = new FormControl('')
+  // Users must be 18 or older and set max for error handling
+  age = new FormControl('', [
+    Validators.required,
+    Validators.min(18),
+    Validators.max(120)
+  ])
   password = new FormControl('')
   confirm_password = new FormControl('')
   phoneNumber = new FormControl('')
