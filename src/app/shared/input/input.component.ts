@@ -1,10 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './input.component.html',
   styleUrl: './input.component.css'
 })

@@ -14,7 +14,8 @@ import { InputComponent } from '../../shared/input/input.component';
 export class RegistrationComponent {
   registerForm = new FormGroup({
     name: new FormControl('', [
-      Validators.required
+      Validators.required,
+      Validators.minLength(3)
     ]),
     email: new FormControl(''),
     age: new FormControl(''),
@@ -22,4 +23,6 @@ export class RegistrationComponent {
     confirm_password: new FormControl(''),
     phoneNumber: new FormControl('')
   })
+
+
 }
