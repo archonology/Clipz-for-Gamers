@@ -1,0 +1,32 @@
+<!-- mask and dropSpecialChars used for handling the phone numeber. User will see formatted phone number as they input. -->
+<input
+  [formControl]="control"
+  [type]="type"
+  class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+  [placeholder]="placeholder"
+  [mask]="format"
+  [dropSpecialCharacters]="false"
+/>
+<!-- Structural directive keeps things DRY for repeated conditions -->
+<ng-container *ngIf="control.touched && control.dirty">
+  <p *ngIf="control.errors?.['pattern']" class="text-red-400">
+    Passwords must be at least 8 characters long, have 1 uppercase letter, 1,
+    lowercase letter, and 1 number.
+  </p>
+  <p class="text-red-400" *ngIf="control.errors?.['required']">
+    Field is required.
+  </p>
+  <!-- This minLength error message will run for both the name and the phone number, so the message must be nondescript for now -->
+  <p class="text-red-400" *ngIf="control.errors?.['minlength']">
+    Not enough characters inputed.
+  </p>
+  <p *ngIf="control.errors?.['email']" class="text-red-400">
+    You must enter a valid email.
+  </p>
+  <p *ngIf="control.errors?.['min']" class="text-red-400">
+    You aren't old enough to create an account.
+  </p>
+  <p *ngIf="control.errors?.['max']" class="text-red-400">
+    You may be too old to create an account.
+  </p>
+</ng-container>
