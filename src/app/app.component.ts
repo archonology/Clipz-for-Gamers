@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { UserModule } from './user/user.module';
 import { NavComponent } from './nav/nav.component';
 import { AuthModalComponent } from './user/auth-modal/auth-modal.component';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth'
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { AuthModalComponent } from './user/auth-modal/auth-modal.component';
     UserModule,
     NavComponent,
     AuthModalComponent,
+    AngularFireAuthModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
