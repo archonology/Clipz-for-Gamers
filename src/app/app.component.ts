@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { UserModule } from './user/user.module';
 import { NavComponent } from './nav/nav.component';
 import { AuthModalComponent } from './user/auth-modal/auth-modal.component';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth'
+import { AngularFireModule } from '@angular/fire/compat'
+import { environment } from '../environments/environment';
+
 
 @Component({
   selector: 'app-root',
@@ -16,11 +18,11 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth'
     UserModule,
     NavComponent,
     AuthModalComponent,
-    AngularFireAuthModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'clipz';
+  // firestore: Firestore = inject(Firestore);
 }

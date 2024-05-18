@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe, NgIf } from '@angular/common';
 import { InputComponent } from '../../shared/input/input.component';
 import { AlertComponent } from '../../shared/alert/alert.component';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Auth } from '@angular/fire/auth';
+import { createUserWithEmailAndPassword } from "@angular/fire/auth";
 
 
 @Component({
@@ -20,7 +21,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   styleUrl: './registration.component.css'
 })
 export class RegistrationComponent {
-  constructor(private auth: AngularFireAuth) { }
+  private auth = (inject(Auth));
+
 
   name = new FormControl('', [
     Validators.required,
@@ -69,6 +71,17 @@ export class RegistrationComponent {
 
     const { email, password } = this.registerForm.value
 
-    const userCred = await this.auth.createUserWithEmailAndPassword(email as string, password as string)
+    try {
+      const userCred = await createUserWithEmailAndPassword(this.auth, email as string, password as string)
+      console.log(userCred)
+    } catch (e) {
+      console.error(e)
+      this.alertMsg = "An unexpected error occured. Please try again later."
+      this.alertColor = 'red'
+      return
+    }
+    this.alertMsg = 'Success! Your account has been created.'
+    this.alertColor = 'green'
+
   }
 }
