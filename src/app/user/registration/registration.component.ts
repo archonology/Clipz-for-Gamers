@@ -3,9 +3,8 @@ import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angula
 import { JsonPipe, NgIf } from '@angular/common';
 import { InputComponent } from '../../shared/input/input.component';
 import { AlertComponent } from '../../shared/alert/alert.component';
-import { Auth } from '@angular/fire/auth';
-import { createUserWithEmailAndPassword } from "@angular/fire/auth";
-import { Firestore, doc, setDoc, collection } from '@angular/fire/firestore';
+import { AuthService } from '../../services/auth.service';
+import IUser from '../../models/user.model';
 
 
 @Component({
@@ -22,9 +21,11 @@ import { Firestore, doc, setDoc, collection } from '@angular/fire/firestore';
   styleUrl: './registration.component.css'
 })
 export class RegistrationComponent {
-  private db: Firestore = inject(Firestore);
-  private auth = (inject(Auth));
   inSubmission = false;
+
+  constructor(private auth: AuthService) {
+
+  }
 
   name = new FormControl('', [
     Validators.required,
@@ -35,7 +36,7 @@ export class RegistrationComponent {
     Validators.email
   ])
   // Users must be 18 or older and set max for error handling
-  age = new FormControl('', [
+  age = new FormControl<number | null>(null, [
     Validators.required,
     Validators.min(18),
     Validators.max(120)
@@ -72,21 +73,9 @@ export class RegistrationComponent {
     this.alertColor = 'blue'
     this.inSubmission = true
 
-    const { email, password } = this.registerForm.value
-
     try {
-      const userCred = await createUserWithEmailAndPassword(this.auth, email as string, password as string)
 
-      const userData = {
-        name: this.name.value,
-        email: this.email.value,
-        age: this.age.value,
-        phoneNumber: this.phoneNumber.value
-      }
-
-      const userCollection = collection(this.db, 'users')
-
-      await setDoc(doc(userCollection), userData)
+      await this.auth.createUser(this.registerForm.value as IUser)
 
     } catch (e) {
       console.error(e)

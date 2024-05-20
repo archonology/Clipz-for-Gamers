@@ -8,8 +8,6 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment.development';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
-
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebase)),
