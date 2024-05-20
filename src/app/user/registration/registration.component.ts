@@ -5,6 +5,7 @@ import { InputComponent } from '../../shared/input/input.component';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { Auth } from '@angular/fire/auth';
 import { createUserWithEmailAndPassword } from "@angular/fire/auth";
+import { Firestore, doc, setDoc, collection } from '@angular/fire/firestore';
 
 
 @Component({
@@ -21,6 +22,7 @@ import { createUserWithEmailAndPassword } from "@angular/fire/auth";
   styleUrl: './registration.component.css'
 })
 export class RegistrationComponent {
+  private db: Firestore = inject(Firestore);
   private auth = (inject(Auth));
   inSubmission = false;
 
@@ -74,6 +76,18 @@ export class RegistrationComponent {
 
     try {
       const userCred = await createUserWithEmailAndPassword(this.auth, email as string, password as string)
+
+      const userData = {
+        name: this.name.value,
+        email: this.email.value,
+        age: this.age.value,
+        phoneNumber: this.phoneNumber.value
+      }
+
+      const userCollection = collection(this.db, 'users')
+
+      await setDoc(doc(userCollection), userData)
+
     } catch (e) {
       console.error(e)
       this.alertMsg = "An unexpected error occured. Please try again later."
