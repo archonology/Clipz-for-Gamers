@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { UserModule } from './user/user.module';

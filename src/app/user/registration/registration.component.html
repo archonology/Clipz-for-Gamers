@@ -20,7 +20,6 @@
   <!-- Age -->
   <div class="mb-3">
     <label class="inline-block mb-2">Age</label>
-    <label class="inline-block mb-2">Email</label>
     <app-input
       [control]="age"
       type="number"
@@ -58,7 +57,7 @@
   <button
     type="submit"
     class="disabled:opacity-50 disabled:bg-indigo-400 block w-full bg-indigo-400 text-white py-1.5 px-3 rounded transition hover:bg-indigo-500"
-    [disabled]="registerForm.invalid"
+    [disabled]="registerForm.invalid || inSubmission"
   >
     Submit
   </button>
