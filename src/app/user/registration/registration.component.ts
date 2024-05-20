@@ -22,7 +22,7 @@ import { createUserWithEmailAndPassword } from "@angular/fire/auth";
 })
 export class RegistrationComponent {
   private auth = (inject(Auth));
-
+  inSubmission = false;
 
   name = new FormControl('', [
     Validators.required,
@@ -68,16 +68,17 @@ export class RegistrationComponent {
     this.showAlert = true
     this.alertMsg = 'Please wait! Your account is being created.'
     this.alertColor = 'blue'
+    this.inSubmission = true
 
     const { email, password } = this.registerForm.value
 
     try {
       const userCred = await createUserWithEmailAndPassword(this.auth, email as string, password as string)
-      console.log(userCred)
     } catch (e) {
       console.error(e)
       this.alertMsg = "An unexpected error occured. Please try again later."
       this.alertColor = 'red'
+      this.inSubmission = false
       return
     }
     this.alertMsg = 'Success! Your account has been created.'
