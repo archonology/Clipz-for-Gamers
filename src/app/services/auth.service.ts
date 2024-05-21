@@ -1,11 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, updateProfile } from '@angular/fire/auth';
 import { createUserWithEmailAndPassword } from "@angular/fire/auth";
-import { Firestore, doc, setDoc, collection, updateDoc } from '@angular/fire/firestore';
+import { Firestore, doc, setDoc, collection } from '@angular/fire/firestore';
 import IUser from '../models/user.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private db: Firestore = inject(Firestore);
@@ -30,10 +30,9 @@ export class AuthService {
 
     const userCollection = collection(this.db, 'users')
 
-
     await setDoc(doc(userCollection, userCred.user.uid), submissionData)
 
-    this.auth.currentUser
+
     await updateProfile(userCred.user, {
       displayName: userData.name
     })

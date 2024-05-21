@@ -6,7 +6,6 @@ import { AlertComponent } from '../../shared/alert/alert.component';
 import { AuthService } from '../../services/auth.service';
 import IUser from '../../models/user.model';
 
-
 @Component({
   selector: 'app-registration',
   standalone: true,
