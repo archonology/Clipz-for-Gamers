@@ -41,7 +41,7 @@ export class LoginComponent {
       this.alertMsg = 'Please wait! You are being logged in...'
       this.alertColor = 'blue'
       this.inSubmission = false
-      const loggedIn = await signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         this.auth,
         this.credentials.email as string,
         this.credentials.password as string

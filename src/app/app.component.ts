@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { UserModule } from './user/user.module';
 import { NavComponent } from './nav/nav.component';
 import { AuthModalComponent } from './user/auth-modal/auth-modal.component';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -20,5 +21,7 @@ import { AuthModalComponent } from './user/auth-modal/auth-modal.component';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'clipz';
+  constructor(public auth: AuthService) {
+
+  }
 }
