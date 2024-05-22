@@ -4,11 +4,12 @@ import { ModalService } from '../services/modal.service';
 import { AuthService } from '../services/auth.service';
 import { NgIf } from '@angular/common';
 import { Auth } from '@angular/fire/auth';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [NgIf, CommonModule],
+  imports: [NgIf, CommonModule, RouterLink],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css'
 })
