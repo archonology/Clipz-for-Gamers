@@ -66,7 +66,8 @@ export class RegistrationComponent {
     password: this.password,
     confirm_password: this.confirm_password,
     phoneNumber: this.phoneNumber
-  }, [RegisterValidators.match])
+  }, [RegisterValidators.match('password', 'confirm_password')])
+
   async register() {
     this.showAlert = true
     this.alertMsg = 'Please wait! Your account is being created.'
