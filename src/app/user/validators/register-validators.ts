@@ -4,6 +4,7 @@ export class RegisterValidators {
     // without static: new RegisterValidators.match()
     // with static: RegisterValidators.match()
     // STATIC METHODS DON'T have access to an object's properties or methods. AKA LIMITED SCOPE...
+    // Doesn't work with async validation
 
     static match(controlName: string, matchingControlName: string): ValidatorFn {
         return (group: AbstractControl): ValidationErrors | null => {

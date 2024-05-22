@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe, NgIf } from '@angular/common';
 import { InputComponent } from '../../shared/input/input.component';
@@ -6,6 +6,7 @@ import { AlertComponent } from '../../shared/alert/alert.component';
 import { AuthService } from '../../services/auth.service';
 import IUser from '../../models/user.model';
 import { RegisterValidators } from '../validators/register-validators';
+import { EmailTaken } from '../validators/email-taken';
 
 @Component({
   selector: 'app-registration',
@@ -23,7 +24,10 @@ import { RegisterValidators } from '../validators/register-validators';
 export class RegistrationComponent {
   inSubmission = false;
 
-  constructor(private auth: AuthService) {
+  constructor(
+    private auth: AuthService,
+    private emailTaken: EmailTaken
+  ) {
 
   }
 
@@ -31,10 +35,11 @@ export class RegistrationComponent {
     Validators.required,
     Validators.minLength(3)
   ])
+  // Form control can take in 3 arguments: 1. type validators 2. synchronous validators 3. Async validators
   email = new FormControl('', [
     Validators.required,
     Validators.email
-  ])
+  ], [this.emailTaken.validate])
   // Users must be 18 or older and set max for error handling
   age = new FormControl<number | null>(null, [
     Validators.required,
