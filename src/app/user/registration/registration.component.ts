@@ -5,6 +5,7 @@ import { InputComponent } from '../../shared/input/input.component';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { AuthService } from '../../services/auth.service';
 import IUser from '../../models/user.model';
+import { RegisterValidators } from '../validators/register-validators';
 
 @Component({
   selector: 'app-registration',
@@ -65,7 +66,7 @@ export class RegistrationComponent {
     password: this.password,
     confirm_password: this.confirm_password,
     phoneNumber: this.phoneNumber
-  })
+  }, [RegisterValidators.match])
   async register() {
     this.showAlert = true
     this.alertMsg = 'Please wait! Your account is being created.'
