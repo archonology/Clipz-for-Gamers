@@ -11,10 +11,15 @@ export class RegisterValidators {
             const matchingControl = group.get(matchingControlName)
 
             if (!control || !matchingControl) {
+                // error message for developers
+                console.error("Form controls can not be found in the four group.")
                 return { controlNotFound: false }
             }
 
             const error = control.value === matchingControl.value ? null : { noMatch: true }
+
+            // set built in Angular errors with matchingControl -- this is handled in the shared/input/input.component.html file. ('noMatch')
+            matchingControl.setErrors(error)
 
             return error
         }

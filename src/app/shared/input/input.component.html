@@ -29,4 +29,7 @@
   <p *ngIf="control.errors?.['max']" class="text-red-400">
     You may be too old to create an account.
   </p>
+    <p *ngIf="control.errors?.['noMatch']" class="text-red-400">
+    Passwords do not match.
+  </p>
 </ng-container>
