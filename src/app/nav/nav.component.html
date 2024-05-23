@@ -17,6 +17,7 @@
         </li>
         <ng-template #authLinks>
           <li>
+            <!-- use queryParams from routerLink to set query params -- one of the ways to get that done. See the manage.component.ts to see the other ways. [queryParams]="{ sort: '1' }"-->
             <a
               class="px-2"
               routerLink="/manage"
