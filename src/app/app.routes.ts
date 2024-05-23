@@ -34,6 +34,11 @@ export const routes: Routes = [
         component: ClipComponent
     },
     {
+        path: 'manage-clips',
+        redirectTo: 'manage',
+        pathMatch: 'full'
+    },
+    {
         path: '**',
         component: NotFoundComponent
     },
