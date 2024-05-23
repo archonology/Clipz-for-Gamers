@@ -4,7 +4,7 @@ import { ModalService } from '../services/modal.service';
 import { AuthService } from '../services/auth.service';
 import { NgIf } from '@angular/common';
 import { Auth } from '@angular/fire/auth';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -17,7 +17,8 @@ export class NavComponent {
   private afAuth: Auth = (inject(Auth));
   constructor(
     public modal: ModalService,
-    public auth: AuthService
+    public auth: AuthService,
+    private router: Router
   ) {
   }
 
@@ -30,5 +31,7 @@ export class NavComponent {
   async logout($event: Event) {
     $event.preventDefault()
     await this.afAuth.signOut()
+    // this navigateByUrl method needs an absolute path
+    await this.router.navigateByUrl('/')
   }
 }
