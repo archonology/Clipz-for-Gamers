@@ -13,6 +13,9 @@ export const routes: Routes = [
     },
     {
         path: 'manage',
-        loadComponent: () => ManageComponent
+        loadComponent: () => ManageComponent,
+        data: {
+            authOnly: true
+        }
     }
 ];
