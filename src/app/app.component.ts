@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { NavComponent } from './nav/nav.component';
 import { AuthModalComponent } from './user/auth-modal/auth-modal.component';
 import { AuthService } from './services/auth.service';
+import { VideoModule } from './video/video.module';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ import { AuthService } from './services/auth.service';
     UserModule,
     NavComponent,
     AuthModalComponent,
+    VideoModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
