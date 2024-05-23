@@ -9,7 +9,7 @@ import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
 // Angular 14+ you don't need RouterModules to handle child routes -- just use loadComponent here to reduce complexity and keep the lazy load benefits. Also, it says in the docs the RouterModule is still available, but with the new standalone first module structure, there are complications that I've yet to understand how to resolve.
 
-const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/']);
+const redirectUnauthorizedToHome = () => redirectUnauthorizedTo(['/']);
 
 export const routes: Routes = [
     {
@@ -24,7 +24,7 @@ export const routes: Routes = [
     {
         path: 'manage',
         loadComponent: () => ManageComponent,
-        ...canActivate(redirectUnauthorizedToLogin),
+        ...canActivate(redirectUnauthorizedToHome),
         data: {
             authOnly: true
         }
