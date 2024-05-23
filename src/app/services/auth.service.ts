@@ -5,6 +5,7 @@ import { Firestore, doc, setDoc, collection } from '@angular/fire/firestore';
 import IUser from '../models/user.model';
 import { Observable } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,10 +16,10 @@ export class AuthService {
   public authorized: boolean = false;
   user$ = user(this.auth);
   public isAuthenticated$: Observable<boolean>
-  public isAuthenticatedWithDelay$: Observable<boolean> 
+  public isAuthenticatedWithDelay$: Observable<boolean>
 
 
-  constructor() {
+  constructor(private router: Router) {
     this.isAuthenticated$ = this.user$.pipe(
       map(user => !!user)
     ),
@@ -48,5 +49,14 @@ export class AuthService {
       displayName: userData.name
     })
 
+  }
+
+  public async logout($event?: Event) {
+    if ($event) {
+      $event.preventDefault()
+    }
+    await this.auth.signOut()
+    // this navigateByUrl method needs an absolute path
+    await this.router.navigateByUrl('/')
   }
 }
