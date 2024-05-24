@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 
 
@@ -7,7 +7,8 @@ import { SharedModule } from '../shared/shared.module';
   declarations: [],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    NgClass
   ]
 })
 export class VideoModule { }
