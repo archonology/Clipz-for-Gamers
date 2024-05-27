@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { AlertComponent } from '../../shared/alert/alert.component';
-import { Auth, updateProfile, User, user } from '@angular/fire/auth';
+import { Auth } from '@angular/fire/auth';
 import { signInWithEmailAndPassword } from "@angular/fire/auth";
 
 @Component({
