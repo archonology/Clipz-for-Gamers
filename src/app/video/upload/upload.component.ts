@@ -8,6 +8,7 @@ import { InputComponent } from '../../shared/input/input.component';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { v4 as uuid } from 'uuid';
 import { AlertComponent } from '../../shared/alert/alert.component';
+import { last } from 'rxjs';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class UploadComponent {
   alertMsg = 'Please wait! Your clip is being uploaded.'
   inSubmission = false
   percentage = 0
+  showPercentage = false
   file: File | null = null
   storeFile($event: Event) {
     this.isDragover = false
@@ -60,11 +62,29 @@ export class UploadComponent {
     this.alertColor = 'blue'
     this.alertMsg = 'Please wait! Your clip is being uploaded.'
     this.inSubmission = true
+    this.showPercentage = true
     const clipFileName = uuid()
     const clipPath = `clips/${clipFileName}.mp4`
     const task = this.storage.upload(clipPath, this.file)
     task.percentageChanges().subscribe(progress => {
       this.percentage = progress as number / 100
+    })
+
+    task.snapshotChanges().pipe(
+      last()
+    ).subscribe({
+      next: (snapshot) => {
+        this.alertColor = 'green'
+        this.alertMsg = 'Success! Your clip is ready to share with the world!'
+        this.showPercentage = false
+      },
+      error: (error) => {
+        this.alertColor = 'red'
+        this.alertMsg = 'Upload failed! Please try again later.'
+        this.inSubmission = true
+        this.showPercentage = false
+        console.error(error)
+      }
     })
   }
 }
