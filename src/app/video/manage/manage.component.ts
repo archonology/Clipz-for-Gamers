@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-manage',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './manage.component.html',
   styleUrl: './manage.component.css'
 })
