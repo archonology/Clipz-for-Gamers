@@ -6,12 +6,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InputComponent } from '../../shared/input/input.component';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { v4 as uuid } from 'uuid';
+import { AlertComponent } from '../../shared/alert/alert.component';
 
 
 @Component({
   selector: 'app-upload',
   standalone: true,
-  imports: [EventBlockerDirective, NgClass, NgIf, ReactiveFormsModule, InputComponent],
+  imports: [EventBlockerDirective, NgClass, NgIf, ReactiveFormsModule, InputComponent, AlertComponent],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css'
 })
@@ -21,6 +22,10 @@ export class UploadComponent {
   //set a custom hover event to keep the visuals for the user
   isDragover = false
   nextStep = false
+  showAlert = false
+  alertColor = 'blue'
+  alertMsg = 'Please wait! Your clip is being uploaded.'
+  inSubmission = false
   file: File | null = null
   storeFile($event: Event) {
     this.isDragover = false
@@ -49,6 +54,10 @@ export class UploadComponent {
   })
 
   uploadFile() {
+    this.showAlert = true
+    this.alertColor = 'blue'
+    this.alertMsg = 'Please wait! Your clip is being uploaded.'
+    this.inSubmission = true
     const clipFileName = uuid()
     const clipPath = `clips/${clipFileName}.mp4`
     this.storage.upload(clipPath, this.file)
