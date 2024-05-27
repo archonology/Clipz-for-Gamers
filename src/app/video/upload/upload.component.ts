@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { EventBlockerDirective } from '../../shared/directives/event-blocker.directive';
 import { NgClass, NgIf } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +13,7 @@ import { AlertComponent } from '../../shared/alert/alert.component';
 @Component({
   selector: 'app-upload',
   standalone: true,
-  imports: [EventBlockerDirective, NgClass, NgIf, ReactiveFormsModule, InputComponent, AlertComponent],
+  imports: [EventBlockerDirective, NgClass, NgIf, ReactiveFormsModule, InputComponent, AlertComponent, CommonModule],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css'
 })
@@ -26,6 +27,7 @@ export class UploadComponent {
   alertColor = 'blue'
   alertMsg = 'Please wait! Your clip is being uploaded.'
   inSubmission = false
+  percentage = 0
   file: File | null = null
   storeFile($event: Event) {
     this.isDragover = false
@@ -60,6 +62,9 @@ export class UploadComponent {
     this.inSubmission = true
     const clipFileName = uuid()
     const clipPath = `clips/${clipFileName}.mp4`
-    this.storage.upload(clipPath, this.file)
+    const task = this.storage.upload(clipPath, this.file)
+    task.percentageChanges().subscribe(progress => {
+      this.percentage = progress as number / 100
+    })
   }
 }
