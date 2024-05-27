@@ -8,7 +8,7 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     SharedModule,
-    NgClass
+    NgClass,
   ]
 })
 export class VideoModule { }
