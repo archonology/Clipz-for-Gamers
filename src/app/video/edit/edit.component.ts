@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { ModalService } from '../../services/modal.service';
 import IClip from '../../models/clip.model';
@@ -30,6 +30,7 @@ export class EditComponent implements OnDestroy, OnInit, OnChanges {
   showAlert = false
   alertColor = 'blue'
   alertMsg = 'Please wait! Updating clip.'
+  @Output() update = new EventEmitter()
 
   clipID = new FormControl('', { nonNullable: true })
   title = new FormControl('', {
@@ -62,6 +63,9 @@ export class EditComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   async submit() {
+    if (!this.activeClip) {
+      return
+    }
     this.inSubmission = true
     this.showAlert = true
     this.alertColor = 'blue'
@@ -74,6 +78,9 @@ export class EditComponent implements OnDestroy, OnInit, OnChanges {
       this.alertColor = 'red'
       this.alertMsg = 'Something went wrong. Try again later.'
     }
+    // send the updated data back to the manage component
+    this.activeClip.title = this.title.value as string
+    this.update.emit(this.activeClip)
     this.inSubmission = false
     this.alertColor = 'green'
     this.alertMsg = 'Success!'

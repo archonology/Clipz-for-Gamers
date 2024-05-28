@@ -58,6 +58,14 @@ export class ManageComponent {
     this.modal.toggleModal('editClip')
   }
 
+  update($event: IClip) {
+    this.clips.forEach((element, index) => {
+      if (element.docID == $event.docID) {
+        this.clips[index].title = $event.title
+      }
+    })
+  }
+
 }
 
 // Path Parameters: to be used for returning a single resource or multiple resources.
