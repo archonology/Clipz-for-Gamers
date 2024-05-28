@@ -10,6 +10,7 @@ import { v4 as uuid } from 'uuid';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { last, switchMap } from 'rxjs';
 import { Auth } from '@angular/fire/auth';
+import { ClipService } from '../../services/clip.service';
 import firebase from 'firebase/compat/app'
 
 @Component({
@@ -21,7 +22,10 @@ import firebase from 'firebase/compat/app'
 })
 export class UploadComponent {
   private auth: Auth = (inject(Auth));
-  constructor(private storage: AngularFireStorage) { }
+  constructor(
+    private storage: AngularFireStorage,
+    private clipService: ClipService) {
+  }
   //set a custom hover event to keep the visuals for the user
   isDragover = false
   nextStep = false
@@ -78,12 +82,13 @@ export class UploadComponent {
     ).subscribe({
       next: (url) => {
         const clip = {
-          uid: this.auth.currentUser?.uid,
-          displayName: this.auth.currentUser?.displayName,
+          uid: this.auth.currentUser?.uid as string,
+          displayName: this.auth.currentUser?.displayName as string,
           title: this.title.value,
           fileName: `${clipFileName}.mp4`,
           url
         }
+        this.clipService.createClip(clip)
 
         console.log(clip)
 
