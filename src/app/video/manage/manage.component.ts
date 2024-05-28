@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { Router, RouterLink, ActivatedRoute, Params } from '@angular/router';
 import { ClipService } from '../../services/clip.service';
 import IClip from '../../models/clip.model';
 import { EditComponent } from '../edit/edit.component';
 import { ModalService } from '../../services/modal.service';
+// BehaviorSubject can't be created with an operator
+import { BehaviorSubject, catchError, throwError } from 'rxjs';
+import { error } from 'console';
 
 @Component({
   selector: 'app-manage',
@@ -13,19 +16,27 @@ import { ModalService } from '../../services/modal.service';
   templateUrl: './manage.component.html',
   styleUrl: './manage.component.css'
 })
-export class ManageComponent {
-  videoOrder = '1'
+export class ManageComponent implements OnInit {
+  videoOrder: string = '1'
   clips: IClip[] = []
   activeClip: IClip | null = null
+  sort$: BehaviorSubject<string>
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private clipService: ClipService,
     private modal: ModalService
   ) {
+
+    this.sort$ = new BehaviorSubject(this.videoOrder)
+
+  }
+
+  ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
-      this.videoOrder = params['sort'] === '2' ? params['sort'] : 1;
-      this.clipService.getUserClips().subscribe(docs => {
+      this.videoOrder = params['sort'] === '2' ? params['sort'] : '1'
+      this.sort$.next(this.videoOrder)
+      this.clipService.getUserClips(this.sort$).subscribe(docs => {
         this.clips = []
         docs.forEach(doc => {
           this.clips.push({
@@ -72,6 +83,7 @@ export class ManageComponent {
 
     this.clips.forEach((el, i) => {
       if (el.docID == clip.docID) {
+        // update the DOM in a simple way
         this.clips.splice(i, 1)
       }
     })

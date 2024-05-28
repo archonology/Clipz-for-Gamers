@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc, deleteDoc, orderBy } from '@angular/fire/firestore';
 import { DocumentReference } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
-import { switchMap, of, map } from 'rxjs';
+import { switchMap, of, map, BehaviorSubject, combineLatest } from 'rxjs';
 
 import IClip from '../models/clip.model';
 @Injectable({
@@ -21,14 +21,22 @@ export class ClipService {
     return addDoc(clipsCollection, data)
   }
 
-  getUserClips() {
-    return user(this.auth).pipe(
-      switchMap(user => {
+  getUserClips(sort$: BehaviorSubject<string>) {
+    //combine latest will get the latest, so will run when variables change -- we want to catch the sort$ variable so we can change the display order when the user requests it.
+    return combineLatest([
+      user(this.auth),
+      sort$
+    ]).pipe(
+      switchMap(values => {
+        const [user, sort] = values
         if (!user) {
           return of([])
         }
         const clipsCollection = collection(this.db, 'clips')
-        const runQuery = query(clipsCollection, where('uid', '==', user.uid))
+        const runQuery = query(clipsCollection, where('uid', '==', user.uid), orderBy(
+          'timestamp',
+          sort === '1' ? 'desc' : 'asc'
+        ))
 
         return getDocs(runQuery)
       }),
