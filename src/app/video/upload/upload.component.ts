@@ -13,6 +13,7 @@ import { Auth } from '@angular/fire/auth';
 import { ClipService } from '../../services/clip.service';
 import { Firestore, doc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { serverTimestamp } from '@angular/fire/firestore';
 
 
 @Component({
@@ -104,7 +105,8 @@ export class UploadComponent implements OnDestroy {
           displayName: this.auth.currentUser?.displayName as string,
           title: this.title.value,
           fileName: `${clipFileName}.mp4`,
-          url
+          url,
+          timestamp: serverTimestamp()
         }
         const clipDocRef = await this.clipService.createClip(clip)
         // because of recent AngularFire compatability issues, I am doing the query of the just created clip here (with getClip), rather than the createClip function, though it isn't ideal. I ran into issues with setDoc method not returning the kind of promise I needed, and the new AngularFire tree shaking method doesn't have any supporting docs at the time of creation. Additionally, the modular way was goving me a lot of trouble when dealing with services and Angular's new 'standalone' build defaults.

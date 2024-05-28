@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, setDoc, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, setDoc, doc } from '@angular/fire/firestore';
 
 import IClip from '../models/clip.model';
 @Injectable({
