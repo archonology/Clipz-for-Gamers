@@ -66,6 +66,17 @@ export class ManageComponent {
     })
   }
 
+  deleteClip($event: Event, clip: IClip) {
+    $event.preventDefault()
+    this.clipService.deleteClip(clip)
+
+    this.clips.forEach((el, i) => {
+      if (el.docID == clip.docID) {
+        this.clips.splice(i, 1)
+      }
+    })
+  }
+
 }
 
 // Path Parameters: to be used for returning a single resource or multiple resources.

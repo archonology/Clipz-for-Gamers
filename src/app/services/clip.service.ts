@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { DocumentReference } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
 import { switchMap, of, map } from 'rxjs';
@@ -42,5 +42,10 @@ export class ClipService {
     updateDoc(doc(clipsCollection, id), {
       title
     })
+  }
+
+  async deleteClip(clip: IClip) {
+    const clipsCollection = collection(this.db, 'clips')
+    await deleteDoc(doc(clipsCollection, clip.docID))
   }
 }
