@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc } from '@angular/fire/firestore';
 import { DocumentReference } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
 import { switchMap, of, map } from 'rxjs';
@@ -14,6 +14,7 @@ export class ClipService {
 
   constructor() {
   }
+
 
   createClip(data: IClip): Promise<DocumentReference> {
     const clipsCollection = collection(this.db, 'clips')
@@ -33,5 +34,13 @@ export class ClipService {
       }),
       map(snapshot => (snapshot as QuerySnapshot<IClip>).docs)
     )
+  }
+
+  updateClip(id: string, title: string) {
+    const clipsCollection = collection(this.db, 'clips')
+
+    updateDoc(doc(clipsCollection, id), {
+      title
+    })
   }
 }
