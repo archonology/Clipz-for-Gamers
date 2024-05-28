@@ -1,17 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventBlockerDirective } from '../../shared/directives/event-blocker.directive';
 import { NgClass, NgIf } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InputComponent } from '../../shared/input/input.component';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
 import { v4 as uuid } from 'uuid';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { last, switchMap } from 'rxjs';
 import { Auth } from '@angular/fire/auth';
 import { ClipService } from '../../services/clip.service';
-import firebase from 'firebase/compat/app'
+
 
 @Component({
   selector: 'app-upload',
@@ -20,7 +20,7 @@ import firebase from 'firebase/compat/app'
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css'
 })
-export class UploadComponent {
+export class UploadComponent implements OnDestroy {
   private auth: Auth = (inject(Auth));
   constructor(
     private storage: AngularFireStorage,
@@ -36,6 +36,13 @@ export class UploadComponent {
   percentage = 0
   showPercentage = false
   file: File | null = null
+  task?: AngularFireUploadTask
+
+  // when a user navigates away from the upload page, the upload process will continue by default, but it won't have access to the file data anymore. To prevent flawed uploads, the AngularFIreUploadTask will be cancelled if the user leaves the page.
+  ngOnDestroy(): void {
+    this.task?.cancel()
+
+  }
 
   storeFile($event: Event) {
     this.isDragover = false
@@ -76,13 +83,13 @@ export class UploadComponent {
     this.showPercentage = true
     const clipFileName = uuid()
     const clipPath = `clips/${clipFileName}.mp4`
-    const task = this.storage.upload(clipPath, this.file)
+    this.task = this.storage.upload(clipPath, this.file)
     const clipRef = this.storage.ref(clipPath)
-    task.percentageChanges().subscribe(progress => {
+    this.task.percentageChanges().subscribe(progress => {
       this.percentage = progress as number / 100
     })
 
-    task.snapshotChanges().pipe(
+    this.task.snapshotChanges().pipe(
       last(),
       switchMap(() => clipRef.getDownloadURL())
     ).subscribe({
