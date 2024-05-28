@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
+import { NgFor } from '@angular/common';
 import { Router, RouterLink, ActivatedRoute, Params } from '@angular/router';
 import { ClipService } from '../../services/clip.service';
 import IClip from '../../models/clip.model';
+import { EditComponent } from '../edit/edit.component';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-manage',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, NgFor, EditComponent],
   templateUrl: './manage.component.html',
   styleUrl: './manage.component.css'
 })
@@ -16,7 +19,8 @@ export class ManageComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private clipService: ClipService
+    private clipService: ClipService,
+    private modal: ModalService
   ) {
     this.route.queryParams.subscribe((params: Params) => {
       this.videoOrder = params['sort'] === '2' ? params['sort'] : 1;
@@ -45,6 +49,11 @@ export class ManageComponent {
     //       sort: value
     //     }
     //   })
+  }
+
+  openModal($event: Event, clip: IClip) {
+    $event.preventDefault()
+    this.modal.toggleModal('editClip')
   }
 
 }
