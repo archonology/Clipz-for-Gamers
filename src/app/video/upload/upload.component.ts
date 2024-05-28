@@ -11,7 +11,7 @@ import { AlertComponent } from '../../shared/alert/alert.component';
 import { last, switchMap } from 'rxjs';
 import { Auth } from '@angular/fire/auth';
 import { ClipService } from '../../services/clip.service';
-import { Firestore, doc } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { serverTimestamp } from '@angular/fire/firestore';
 
@@ -109,15 +109,12 @@ export class UploadComponent implements OnDestroy {
           timestamp: serverTimestamp()
         }
         const clipDocRef = await this.clipService.createClip(clip)
-        // because of recent AngularFire compatability issues, I am doing the query of the just created clip here (with getClip), rather than the createClip function, though it isn't ideal. I ran into issues with setDoc method not returning the kind of promise I needed, and the new AngularFire tree shaking method doesn't have any supporting docs at the time of creation. Additionally, the modular way was goving me a lot of trouble when dealing with services and Angular's new 'standalone' build defaults.
-        const getClip = doc(this.db, 'clips', clipDocRef.fileName)
-
         this.alertColor = 'green'
         this.alertMsg = 'Success! Your clip is ready to share with the world!'
         this.showPercentage = false
         setTimeout(() => {
           this.router.navigate([
-            'clip', getClip.id
+            'clip', clipDocRef.id
           ])
         }, 1000)
       },
