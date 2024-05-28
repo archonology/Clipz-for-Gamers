@@ -7,6 +7,7 @@ import { InputComponent } from './input/input.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideEnvironmentNgxMask, NgxMaskDirective } from 'ngx-mask';
 import { AlertComponent } from './alert/alert.component';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -24,7 +25,7 @@ import { AlertComponent } from './alert/alert.component';
     TabComponent,
     InputComponent,
     ReactiveFormsModule,
-    AlertComponent
+    AlertComponent,
   ],
   providers: [provideEnvironmentNgxMask()],
 })
