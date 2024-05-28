@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventBlockerDirective } from '../../shared/directives/event-blocker.directive';
 import { NgClass, NgIf } from '@angular/common';
@@ -8,8 +8,9 @@ import { InputComponent } from '../../shared/input/input.component';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { v4 as uuid } from 'uuid';
 import { AlertComponent } from '../../shared/alert/alert.component';
-import { last } from 'rxjs';
-
+import { last, switchMap } from 'rxjs';
+import { Auth } from '@angular/fire/auth';
+import firebase from 'firebase/compat/app'
 
 @Component({
   selector: 'app-upload',
@@ -19,7 +20,7 @@ import { last } from 'rxjs';
   styleUrl: './upload.component.css'
 })
 export class UploadComponent {
-
+  private auth: Auth = (inject(Auth));
   constructor(private storage: AngularFireStorage) { }
   //set a custom hover event to keep the visuals for the user
   isDragover = false
@@ -66,14 +67,26 @@ export class UploadComponent {
     const clipFileName = uuid()
     const clipPath = `clips/${clipFileName}.mp4`
     const task = this.storage.upload(clipPath, this.file)
+    const clipRef = this.storage.ref(clipPath)
     task.percentageChanges().subscribe(progress => {
       this.percentage = progress as number / 100
     })
 
     task.snapshotChanges().pipe(
-      last()
+      last(),
+      switchMap(() => clipRef.getDownloadURL())
     ).subscribe({
-      next: (snapshot) => {
+      next: (url) => {
+        const clip = {
+          uid: this.auth.currentUser?.uid,
+          displayName: this.auth.currentUser?.displayName,
+          title: this.title.value,
+          fileName: `${clipFileName}.mp4`,
+          url
+        }
+
+        console.log(clip)
+
         this.alertColor = 'green'
         this.alertMsg = 'Success! Your clip is ready to share with the world!'
         this.showPercentage = false
