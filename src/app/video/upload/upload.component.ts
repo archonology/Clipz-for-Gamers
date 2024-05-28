@@ -36,9 +36,13 @@ export class UploadComponent {
   percentage = 0
   showPercentage = false
   file: File | null = null
+
   storeFile($event: Event) {
     this.isDragover = false
-    this.file = ($event as DragEvent).dataTransfer?.files.item(0) ?? null
+    // check if files are dragged in or input was used (dragging not supported on mobile).
+    this.file = ($event as DragEvent).dataTransfer ?
+      ($event as DragEvent).dataTransfer?.files.item(0) ?? null :
+      ($event.target as HTMLInputElement).files?.item(0) ?? null
 
     if (!this.file || this.file.type !== 'video/mp4') {
       return
