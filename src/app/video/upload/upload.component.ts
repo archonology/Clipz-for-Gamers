@@ -63,6 +63,8 @@ export class UploadComponent {
   })
 
   uploadFile() {
+    // disable the upload form to prevent changes after submitting
+    this.uploadForm.disable()
     this.showAlert = true
     this.alertColor = 'blue'
     this.alertMsg = 'Please wait! Your clip is being uploaded.'
@@ -97,6 +99,7 @@ export class UploadComponent {
         this.showPercentage = false
       },
       error: (error) => {
+        this.uploadForm.enable()
         this.alertColor = 'red'
         this.alertMsg = 'Upload failed! Please try again later.'
         this.inSubmission = true
@@ -106,3 +109,8 @@ export class UploadComponent {
     })
   }
 }
+// Snapshots and Refs
+// a reference is an object that points to a location in the application
+// it allows you to read/write refrences and create new references
+// snapshots are objects that are a copy of a location in the app
+// they are read only and immutable -- they are memory efficient because of this. They are created for you during events, unlike Refs, which you create.
