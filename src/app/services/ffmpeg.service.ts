@@ -68,4 +68,12 @@ export class FfmpegService {
     this.isRunning = false
     return screenshots
   }
+
+  // handle creating a blob for uploading screenshot to firebase
+  async blobFromURL(url: string) {
+    const response = await fetch(url)
+    const blob = await response.blob()
+
+    return blob
+  }
 }

@@ -50,7 +50,7 @@ export class UploadComponent implements OnDestroy {
   task?: AngularFireUploadTask
   screenshots: string[] = []
   selectedScreenshot: string = ''
-  isClicked = false
+  screenshotTask?: AngularFireUploadTask
 
   // when a user navigates away from the upload page, the upload process will continue by default, but it won't have access to the file data anymore. To prevent flawed uploads, the AngularFIreUploadTask will be cancelled if the user leaves the page.
   ngOnDestroy(): void {
@@ -95,7 +95,7 @@ export class UploadComponent implements OnDestroy {
     title: this.title
   })
 
-  uploadFile() {
+  async uploadFile() {
     // disable the upload form to prevent changes after submitting
     this.uploadForm.disable()
     this.showAlert = true
@@ -105,8 +105,15 @@ export class UploadComponent implements OnDestroy {
     this.showPercentage = true
     const clipFileName = uuid()
     const clipPath = `clips/${clipFileName}.mp4`
+
+    const screenshotBlob = await this.ffmpegService.blobFromURL(this.selectedScreenshot)
+    const screenshotPath = `screenshots/${clipFileName}.png`
+
     this.task = this.storage.upload(clipPath, this.file)
     const clipRef = this.storage.ref(clipPath)
+
+    this.screenshotTask = this.storage.upload(screenshotPath, screenshotBlob)
+
     this.task.percentageChanges().subscribe(progress => {
       this.percentage = progress as number / 100
     })
