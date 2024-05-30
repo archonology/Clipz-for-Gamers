@@ -11,10 +11,6 @@ body {
   font-size: inherit;
 }
 
-.material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
-}
-
 .bg-secondary {
   background-color: #283046;
 }
