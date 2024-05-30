@@ -49,6 +49,8 @@ export class UploadComponent implements OnDestroy {
   file: File | null = null
   task?: AngularFireUploadTask
   screenshots: string[] = []
+  selectedScreenshot: string = ''
+  isClicked = false
 
   // when a user navigates away from the upload page, the upload process will continue by default, but it won't have access to the file data anymore. To prevent flawed uploads, the AngularFIreUploadTask will be cancelled if the user leaves the page.
   ngOnDestroy(): void {
@@ -72,6 +74,8 @@ export class UploadComponent implements OnDestroy {
     }
 
     this.screenshots = await this.ffmpegService.getScreenshots(this.file)
+
+    this.selectedScreenshot = this.screenshots[0]
     this.title.setValue(
       //Default title to file name and remove file extension with Regex.
       this.file.name.replace(/\.[^/.]+$/, ''),
