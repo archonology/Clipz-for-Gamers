@@ -6,6 +6,7 @@ import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
 })
 export class FfmpegService {
   isReady = false
+  isRunning = false
   private ffmpeg
   constructor() {
     // Ffmpeg has a bundled log tool so we can watch for errors in the console.
@@ -25,6 +26,7 @@ export class FfmpegService {
   }
 
   async getScreenshots(file: File) {
+    this.isRunning = true
     // convert accepted file from fileObject to binary
     const data = await fetchFile(file)
     this.ffmpeg.FS('writeFile', file.name, data)
@@ -63,7 +65,7 @@ export class FfmpegService {
 
       screenshots.push(screenshotURL)
     })
-
+    this.isRunning = false
     return screenshots
   }
 }

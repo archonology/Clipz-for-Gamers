@@ -57,6 +57,10 @@ export class UploadComponent implements OnDestroy {
   }
 
   async storeFile($event: Event) {
+    // prevent user from uploading during video processing
+    if (this.ffmpegService.isRunning) {
+      return
+    }
     this.isDragover = false
     // check if files are dragged in or input was used (dragging not supported on mobile).
     this.file = ($event as DragEvent).dataTransfer ?
