@@ -11,11 +11,11 @@ import { AlertComponent } from '../../shared/alert/alert.component';
 import { last, switchMap } from 'rxjs';
 import { Auth } from '@angular/fire/auth';
 import { ClipService } from '../../services/clip.service';
-// import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { serverTimestamp } from '@angular/fire/firestore';
 import { FfmpegService } from '../../services/ffmpeg.service';
 import { SafeURLPipe } from '../pipes/safe-url.pipe';
+import { combineLatest } from 'rxjs';
 
 
 @Component({
@@ -27,7 +27,6 @@ import { SafeURLPipe } from '../pipes/safe-url.pipe';
 })
 export class UploadComponent implements OnDestroy {
   private auth: Auth = (inject(Auth));
-  // private db: Firestore = inject(Firestore);
   constructor(
     private storage: AngularFireStorage,
     private clipService: ClipService,
@@ -114,8 +113,18 @@ export class UploadComponent implements OnDestroy {
 
     this.screenshotTask = this.storage.upload(screenshotPath, screenshotBlob)
 
-    this.task.percentageChanges().subscribe(progress => {
-      this.percentage = progress as number / 100
+    combineLatest([
+      this.task.percentageChanges(),
+      this.screenshotTask.percentageChanges()
+    ]).subscribe((progress) => {
+      const [clipProgress, screenshotProgress] = progress
+
+      if (!clipProgress || !screenshotProgress) {
+        return
+      }
+
+      const total = clipProgress + screenshotProgress
+      this.percentage = total as number / 200
     })
 
     this.task.snapshotChanges().pipe(
