@@ -11,9 +11,10 @@ import { AlertComponent } from '../../shared/alert/alert.component';
 import { last, switchMap } from 'rxjs';
 import { Auth } from '@angular/fire/auth';
 import { ClipService } from '../../services/clip.service';
-import { Firestore } from '@angular/fire/firestore';
+// import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { serverTimestamp } from '@angular/fire/firestore';
+import { FfmpegService } from '../../services/ffmpeg.service';
 
 
 @Component({
@@ -25,12 +26,15 @@ import { serverTimestamp } from '@angular/fire/firestore';
 })
 export class UploadComponent implements OnDestroy {
   private auth: Auth = (inject(Auth));
-  private db: Firestore = inject(Firestore);
+  // private db: Firestore = inject(Firestore);
   constructor(
     private storage: AngularFireStorage,
     private clipService: ClipService,
-    private router: Router
+    private router: Router,
+    public ffmpegService: FfmpegService
   ) {
+    // load ffmpeg ASAP because of it's size
+    this.ffmpegService.init()
   }
   //set a custom hover event to keep the visuals for the user
   isDragover = false
