@@ -28,5 +28,16 @@ export class FfmpegService {
     // convert accepted file from fileObject to binary
     const data = await fetchFile(file)
     this.ffmpeg.FS('writeFile', file.name, data)
+
+    await this.ffmpeg.run(
+      // Input
+      '-i', file.name,
+      // Output options - picking clip locations ('hh:mm:ss') / scale -1 sets to auto.
+      '-ss', '00:00:01',
+      '-frames:v', '1',
+      '-filter:v', 'scale=510:-1',
+      // Output
+      'output_01.png'
+    )
   }
 }
