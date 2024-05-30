@@ -54,7 +54,7 @@ export class UploadComponent implements OnDestroy {
 
   }
 
-  storeFile($event: Event) {
+  async storeFile($event: Event) {
     this.isDragover = false
     // check if files are dragged in or input was used (dragging not supported on mobile).
     this.file = ($event as DragEvent).dataTransfer ?
@@ -64,6 +64,8 @@ export class UploadComponent implements OnDestroy {
     if (!this.file || this.file.type !== 'video/mp4') {
       return
     }
+
+    await this.ffmpegService.getScreenshots(this.file)
     this.title.setValue(
       //Default title to file name and remove file extension with Regex.
       this.file.name.replace(/\.[^/.]+$/, ''),
