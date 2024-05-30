@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, NgClass } from '@angular/common';
+import { CommonModule, NgClass, NgFor } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
@@ -13,7 +13,8 @@ import { environment } from '../../environments/environment.development';
     SharedModule,
     NgClass,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    NgFor
   ]
 })
 export class VideoModule { }

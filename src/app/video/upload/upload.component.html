@@ -2,68 +2,115 @@
 <section class="container mx-auto my-8 bg-secondary p-6">
   <div class="rounded relative flex flex-col">
     <div class="font-bold mb-6">Upload Video</div>
-
-    <!-- Upload Dropbox -->
-    <ng-container *ngIf="!nextStep; else uploadFormCtr">
-      <div
-        app-event-blocker
-        (dragend)="isDragover = false"
-        (dragover)="isDragover = true"
-        (dragenter)="isDragover = true"
-        (dragleave)="isDragover = false"
-        (mouseleave)="isDragover = false"
-        (drop)="storeFile($event)"
-        [ngClass]="{
-          'bg-indigo-400 border-indigo-400 border-solid': isDragover
-        }"
-        class="w-full px-10 py-40 rounded text-center cursor-pointer border border-dashed border-gray-400 transition duration-500 hover:text-white hover:bg-indigo-400 hover:border-indigo-400 hover:border-solid text-xl"
-      >
-        <h5>Drop your file here (mp4 only!)</h5>
+    <ng-container *ngIf="!ffmpegService.isReady; else waitForFfmpeg">
+      <div class="flex justify-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="48px"
+          viewBox="0 -960 960 960"
+          width="48px"
+          fill="#e8eaed"
+          class="animate-pulse space-x-4 mx-auto mb-4"
+          aria-label="animated loading icon"
+        >
+          <path
+            d="M266.12-430q20.88 0 35.38-14.62 14.5-14.62 14.5-35.5 0-20.88-14.62-35.38-14.62-14.5-35.5-14.5-20.88 0-35.38 14.62-14.5 14.62-14.5 35.5 0 20.88 14.62 35.38 14.62 14.5 35.5 14.5Zm214 0q20.88 0 35.38-14.62 14.5-14.62 14.5-35.5 0-20.88-14.62-35.38-14.62-14.5-35.5-14.5-20.88 0-35.38 14.62-14.5 14.62-14.5 35.5 0 20.88 14.62 35.38 14.62 14.5 35.5 14.5Zm213 0q20.88 0 35.38-14.62 14.5-14.62 14.5-35.5 0-20.88-14.62-35.38-14.62-14.5-35.5-14.5-20.88 0-35.38 14.62-14.5 14.62-14.5 35.5 0 20.88 14.62 35.38 14.62 14.5 35.5 14.5ZM480.27-80q-82.74 0-155.5-31.5Q252-143 197.5-197.5t-86-127.34Q80-397.68 80-480.5t31.5-155.66Q143-709 197.5-763t127.34-85.5Q397.68-880 480.5-880t155.66 31.5Q709-817 763-763t85.5 127Q880-563 880-480.27q0 82.74-31.5 155.5Q817-252 763-197.68q-54 54.31-127 86Q563-80 480.27-80Zm.23-60Q622-140 721-239.5t99-241Q820-622 721.19-721T480-820q-141 0-240.5 98.81T140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z"
+          />
+        </svg>
       </div>
-      <input type="file" class="mt-4" (change)="storeFile($event)" />
+      <div class="text-center animate-pulse">
+        <p>Please wait: loading video editor..</p>
+      </div>
     </ng-container>
-    <!-- Video Editor -->
-    <ng-template #uploadFormCtr>
-      <app-alert *ngIf="showAlert" [color]="alertColor">
-        <p>{{ alertMsg }}</p>
-        <p *ngIf="showPercentage">{{ percentage | percent }}</p>
-      </app-alert>
-      <!-- Form -->
-      <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
-        <!-- Screenshots -->
-        <h2 class="mb-4 text-xl">Select a Thumbnail</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div class="border-8 cursor-pointer border-green-400">
-            <img src="assets/img/1.jpg" />
-          </div>
-          <div class="border-8 cursor-pointer border-transparent">
-            <img src="assets/img/2.jpg" />
-          </div>
-          <div class="border-8 cursor-pointer border-transparent">
-            <img src="assets/img/3.jpg" />
+    <ng-template #waitForFfmpeg>
+      <!-- Upload Dropbox -->
+      <ng-container *ngIf="!nextStep; else uploadFormCtr">
+        <div
+          app-event-blocker
+          (dragend)="isDragover = false"
+          (dragover)="isDragover = true"
+          (dragenter)="isDragover = true"
+          (dragleave)="isDragover = false"
+          (mouseleave)="isDragover = false"
+          (drop)="storeFile($event)"
+          [ngClass]="{
+            'bg-indigo-400 border-indigo-400 border-solid': isDragover
+          }"
+          class="w-full px-10 py-40 rounded text-center cursor-pointer border border-dashed border-gray-400 transition duration-500 hover:text-white hover:bg-indigo-400 hover:border-indigo-400 hover:border-solid text-xl"
+        >
+          <h5 *ngIf="!ffmpegService.isRunning">
+            Drop your file here (mp4 only!)
+          </h5>
+          <div *ngIf="ffmpegService.isRunning" class="flex justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="48px"
+              viewBox="0 -960 960 960"
+              width="48px"
+              fill="#e8eaed"
+              class="animate-pulse space-x-4 mx-auto mb-4"
+              aria-label="Please wait: loading video clips"
+            >
+              <path
+                d="M266.12-430q20.88 0 35.38-14.62 14.5-14.62 14.5-35.5 0-20.88-14.62-35.38-14.62-14.5-35.5-14.5-20.88 0-35.38 14.62-14.5 14.62-14.5 35.5 0 20.88 14.62 35.38 14.62 14.5 35.5 14.5Zm214 0q20.88 0 35.38-14.62 14.5-14.62 14.5-35.5 0-20.88-14.62-35.38-14.62-14.5-35.5-14.5-20.88 0-35.38 14.62-14.5 14.62-14.5 35.5 0 20.88 14.62 35.38 14.62 14.5 35.5 14.5Zm213 0q20.88 0 35.38-14.62 14.5-14.62 14.5-35.5 0-20.88-14.62-35.38-14.62-14.5-35.5-14.5-20.88 0-35.38 14.62-14.5 14.62-14.5 35.5 0 20.88 14.62 35.38 14.62 14.5 35.5 14.5ZM480.27-80q-82.74 0-155.5-31.5Q252-143 197.5-197.5t-86-127.34Q80-397.68 80-480.5t31.5-155.66Q143-709 197.5-763t127.34-85.5Q397.68-880 480.5-880t155.66 31.5Q709-817 763-763t85.5 127Q880-563 880-480.27q0 82.74-31.5 155.5Q817-252 763-197.68q-54 54.31-127 86Q563-80 480.27-80Zm.23-60Q622-140 721-239.5t99-241Q820-622 721.19-721T480-820q-141 0-240.5 98.81T140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z"
+              />
+            </svg>
           </div>
         </div>
-
-        <!-- Title -->
-        <div class="mt-4">
-          <label class="block text-xl mb-4">Title</label>
-          <app-input [control]="title" placeholder="Enter Title"></app-input>
-        </div>
-
-        <div class="mt-4 text-right">
-          <button
-            type="submit"
-            [disabled]="inSubmission"
-            [ngClass]="{
-              'opacity-50': inSubmission,
-              'hover:bg-indigo-700': inSubmission
-            }"
-            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-md text-white bg-indigo-600 focus:outline-none"
+        <input
+          *ngIf="!ffmpegService.isRunning"
+          type="file"
+          class="mt-4"
+          (change)="storeFile($event)"
+        />
+      </ng-container>
+      <!-- Video Editor -->
+      <ng-template #uploadFormCtr>
+        <app-alert *ngIf="showAlert" [color]="alertColor">
+          <p>{{ alertMsg }}</p>
+          <p *ngIf="showPercentage">{{ percentage | percent }}</p>
+        </app-alert>
+        <!-- Form -->
+        <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
+          <!-- Screenshots -->
+          <h2 class="mb-4 text-xl">Select a Thumbnail</h2>
+          <div
+            *ngFor="let screenshot of screenshots"
+            class="grid grid-cols-1 lg:grid-cols-3 gap-4"
           >
-            Publish
-          </button>
-        </div>
-      </form>
+            <div
+              class="border-8 cursor-pointer"
+              [ngClass]="{
+                'border-green-400': screenshot === selectedScreenshot,
+                'border-transparent': screenshot !== selectedScreenshot
+              }"
+              (click)="selectedScreenshot = screenshot"
+            >
+              <img [src]="screenshot | safeURL" />
+            </div>
+          </div>
+
+          <!-- Title -->
+          <div class="mt-4">
+            <label class="block text-xl mb-4">Title</label>
+            <app-input [control]="title" placeholder="Enter Title"></app-input>
+          </div>
+
+          <div class="mt-4 text-right">
+            <button
+              type="submit"
+              [disabled]="inSubmission"
+              [ngClass]="{
+                'opacity-50': inSubmission,
+                'hover:bg-indigo-700': inSubmission
+              }"
+              class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-md text-white bg-indigo-600 focus:outline-none"
+            >
+              Publish
+            </button>
+          </div>
+        </form>
+      </ng-template>
     </ng-template>
   </div>
 </section>

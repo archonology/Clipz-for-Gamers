@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc, deleteDoc, orderBy } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc, deleteDoc, orderBy, } from '@angular/fire/firestore';
 import { DocumentReference } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
 import { switchMap, of, map, BehaviorSubject, combineLatest } from 'rxjs';
+import { Storage, ref, deleteObject } from '@angular/fire/storage';
 
 import IClip from '../models/clip.model';
 @Injectable({
@@ -11,6 +12,7 @@ import IClip from '../models/clip.model';
 export class ClipService {
   private db: Firestore = inject(Firestore);
   private auth: Auth = (inject(Auth));
+  private storage = inject(Storage);
 
   constructor() {
   }
@@ -46,7 +48,6 @@ export class ClipService {
 
   updateClip(id: string, title: string) {
     const clipsCollection = collection(this.db, 'clips')
-
     updateDoc(doc(clipsCollection, id), {
       title
     })
@@ -54,6 +55,11 @@ export class ClipService {
 
   async deleteClip(clip: IClip) {
     const clipsCollection = collection(this.db, 'clips')
+    const screenshotRef = ref(this.storage, `screenshots/${clip.screenshotFileName}`)
+    const clipRef = ref(this.storage, `clips/${clip.fileName}`)
     await deleteDoc(doc(clipsCollection, clip.docID))
+    await deleteObject(screenshotRef);
+    await deleteObject(clipRef);
+
   }
 }
