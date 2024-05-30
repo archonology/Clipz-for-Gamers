@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { ClipsListComponent } from '../clips-list/clips-list.component';
 
 @Component({
   selector: 'app-clip',
   standalone: true,
-  imports: [],
+  imports: [ClipsListComponent],
   templateUrl: './clip.component.html',
   styleUrl: './clip.component.css'
 })
