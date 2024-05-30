@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventBlockerDirective } from '../../shared/directives/event-blocker.directive';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass, NgIf, NgFor } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InputComponent } from '../../shared/input/input.component';
@@ -15,12 +15,13 @@ import { ClipService } from '../../services/clip.service';
 import { Router } from '@angular/router';
 import { serverTimestamp } from '@angular/fire/firestore';
 import { FfmpegService } from '../../services/ffmpeg.service';
+import { SafeURLPipe } from '../pipes/safe-url.pipe';
 
 
 @Component({
   selector: 'app-upload',
   standalone: true,
-  imports: [EventBlockerDirective, NgClass, NgIf, ReactiveFormsModule, InputComponent, AlertComponent, CommonModule],
+  imports: [EventBlockerDirective, NgClass, NgIf, ReactiveFormsModule, InputComponent, AlertComponent, CommonModule, NgFor, SafeURLPipe],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css'
 })
@@ -47,6 +48,7 @@ export class UploadComponent implements OnDestroy {
   showPercentage = false
   file: File | null = null
   task?: AngularFireUploadTask
+  screenshots: string[] = []
 
   // when a user navigates away from the upload page, the upload process will continue by default, but it won't have access to the file data anymore. To prevent flawed uploads, the AngularFIreUploadTask will be cancelled if the user leaves the page.
   ngOnDestroy(): void {
@@ -65,7 +67,7 @@ export class UploadComponent implements OnDestroy {
       return
     }
 
-    await this.ffmpegService.getScreenshots(this.file)
+    this.screenshots = await this.ffmpegService.getScreenshots(this.file)
     this.title.setValue(
       //Default title to file name and remove file extension with Regex.
       this.file.name.replace(/\.[^/.]+$/, ''),
