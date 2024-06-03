@@ -5,11 +5,12 @@ import { Auth, user } from '@angular/fire/auth';
 import { switchMap, of, map, BehaviorSubject, combineLatest } from 'rxjs';
 import { Storage, ref, deleteObject } from '@angular/fire/storage';
 import IClip from '../models/clip.model';
+import { ResolveData } from "@angular/router"
 
 @Injectable({
   providedIn: 'root'
 })
-export class ClipService {
+export class ClipService implements ResolveData {
   private db: Firestore = inject(Firestore);
   private auth: Auth = (inject(Auth));
   private storage = inject(Storage);
