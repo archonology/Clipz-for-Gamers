@@ -5,7 +5,6 @@ import { Auth, user } from '@angular/fire/auth';
 import { switchMap, of, map, BehaviorSubject, combineLatest, pipe } from 'rxjs';
 import { Storage, ref, deleteObject } from '@angular/fire/storage';
 import IClip from '../models/clip.model';
-import { CommonModule } from '@angular/common';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Router } from '@angular/router';
 
 @Injectable({
@@ -100,14 +99,12 @@ export class ClipService implements Resolve<IClip | null> {
     this.pendingReq = false
   }
 
-  async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  async resolve(route: ActivatedRouteSnapshot): Promise<IClip | null> {
     const clipsCollection = collection(this.db, 'clips')
     if (this.pendingReq) {
-      return
+      return null
     }
     this.pendingReq = true
-
-    // const snapshot = await getDoc(doc(clipsCollection, route.params['id']))
 
     return getDoc(doc(clipsCollection, route.params['id'])).then((snapshot) => {
       const data = snapshot.data()
@@ -117,7 +114,7 @@ export class ClipService implements Resolve<IClip | null> {
         return null
       }
       this.pendingReq = false
-      return data
+      return (data as any)
     })
 
   }
