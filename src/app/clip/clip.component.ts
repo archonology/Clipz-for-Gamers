@@ -1,8 +1,9 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ClipsListComponent } from '../clips-list/clips-list.component';
 import videojs from 'video.js';
+
 
 
 @Component({
@@ -10,7 +11,9 @@ import videojs from 'video.js';
   standalone: true,
   imports: [ClipsListComponent],
   templateUrl: './clip.component.html',
-  styleUrl: './clip.component.css'
+  encapsulation: ViewEncapsulation.None,
+  styleUrl: './clip.component.css',
+
 })
 export class ClipComponent implements OnInit {
   id = ''
@@ -18,7 +21,7 @@ export class ClipComponent implements OnInit {
   player?: videojs.Player
 
   constructor(private activatedRoute: ActivatedRoute) {
-
+    this.player = videojs(this.target?.nativeElement)
     this.activatedRoute.params.subscribe((params: Params) => {
       this.id = params['id']
     });
@@ -26,6 +29,6 @@ export class ClipComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.player = videojs(this.target?.nativeElement)
+
   }
 }
