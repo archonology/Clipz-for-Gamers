@@ -1,23 +1,24 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc, deleteDoc, orderBy, limit, startAfter } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc, deleteDoc, orderBy, limit, startAfter, getDoc } from '@angular/fire/firestore';
 import { DocumentReference } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
-import { switchMap, of, map, BehaviorSubject, combineLatest } from 'rxjs';
+import { switchMap, of, map, BehaviorSubject, combineLatest, pipe } from 'rxjs';
 import { Storage, ref, deleteObject } from '@angular/fire/storage';
 import IClip from '../models/clip.model';
-import { ResolveData } from "@angular/router"
+import { CommonModule } from '@angular/common';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ClipService implements ResolveData {
+export class ClipService implements Resolve<IClip | null> {
   private db: Firestore = inject(Firestore);
   private auth: Auth = (inject(Auth));
   private storage = inject(Storage);
   pageClips: IClip[] = []
   pendingReq = false
 
-  constructor() {
+  constructor(private router: Router) {
 
   }
 
@@ -97,5 +98,27 @@ export class ClipService implements ResolveData {
     })
 
     this.pendingReq = false
+  }
+
+  async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    const clipsCollection = collection(this.db, 'clips')
+    if (this.pendingReq) {
+      return
+    }
+    this.pendingReq = true
+
+    // const snapshot = await getDoc(doc(clipsCollection, route.params['id']))
+
+    return getDoc(doc(clipsCollection, route.params['id'])).then((snapshot) => {
+      const data = snapshot.data()
+      if (!data) {
+        this.pendingReq = false
+        this.router.navigate(['/'])
+        return null
+      }
+      this.pendingReq = false
+      return data
+    })
+
   }
 }
