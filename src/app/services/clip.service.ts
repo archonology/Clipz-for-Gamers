@@ -1,11 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc, deleteDoc, orderBy, } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, where, getDocs, query, QuerySnapshot, doc, updateDoc, deleteDoc, orderBy, limit, startAfter } from '@angular/fire/firestore';
 import { DocumentReference } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
 import { switchMap, of, map, BehaviorSubject, combineLatest } from 'rxjs';
 import { Storage, ref, deleteObject } from '@angular/fire/storage';
-
 import IClip from '../models/clip.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,8 +13,11 @@ export class ClipService {
   private db: Firestore = inject(Firestore);
   private auth: Auth = (inject(Auth));
   private storage = inject(Storage);
+  pageClips: IClip[] = []
+  pendingReq = false
 
   constructor() {
+
   }
 
 
@@ -61,5 +64,37 @@ export class ClipService {
     await deleteObject(screenshotRef);
     await deleteObject(clipRef);
 
+  }
+
+  // infinite scrolling!
+  async getClips() {
+    if (this.pendingReq) {
+      return
+    }
+    this.pendingReq = true
+    const clipsCollection = collection(this.db, 'clips')
+    let runQuery = query(clipsCollection, orderBy(
+      'timestamp', 'desc'
+    ), limit(6))
+
+    const { length } = this.pageClips
+
+    if (length) {
+      const lastDocID = this.pageClips[length - 1].docID
+      const lastDoc = doc(clipsCollection, lastDocID)
+      runQuery = query(clipsCollection, orderBy(
+        'timestamp', 'desc'
+      ), limit(6), startAfter(lastDoc))
+    }
+
+    const snapshot = await getDocs(runQuery)
+    snapshot.forEach(doc => {
+      this.pageClips.push({
+        docID: doc.id,
+        ...doc.data() as any
+      })
+    })
+
+    this.pendingReq = false
   }
 }
