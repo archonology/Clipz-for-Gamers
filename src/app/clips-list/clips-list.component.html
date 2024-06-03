@@ -3,6 +3,7 @@
   <a
     *ngFor="let clip of clipService.pageClips"
     [routerLink]="['/', 'clip', clip.docID]"
+    (click)="onActivate($event)"
     class="mt-6 rounded-tl-2xl rounded-br-2xl shadow-xl bg-secondary transform hover:-translate-y-2 hover:shadow-2xl transition duration-300"
   >
     <!-- Image -->
@@ -13,7 +14,7 @@
     />
 
     <!-- Shape -->
-    <div class="relative">
+    <div class="relative aspect-video">
       <div
         class="absolute pointer-events-none bottom-full w-full bg-secondary text-white"
       >
@@ -31,7 +32,7 @@
     </div>
 
     <!-- Body -->
-    <div class="p-8">
+    <div class="p-4">
       <!-- Heading -->
       <h2 class="text-3xl mb-2">{{ clip.title }}</h2>
 
