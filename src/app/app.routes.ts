@@ -49,6 +49,12 @@ export const routes: Routes = [
         redirectTo: 'manage',
         pathMatch: 'full'
     },
+    // lazy loading for the video module
+    {
+        path: '',
+        loadChildren: async () => (await import('./video/video.module')).VideoModule
+
+    },
     {
         path: '**',
         component: NotFoundComponent

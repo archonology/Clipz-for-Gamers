@@ -3,6 +3,7 @@
   <a
     *ngFor="let clip of clipService.pageClips"
     [routerLink]="['/', 'clip', clip.docID]"
+    (click)="onActivate($event)"
     class="mt-6 rounded-tl-2xl rounded-br-2xl shadow-xl bg-secondary transform hover:-translate-y-2 hover:shadow-2xl transition duration-300"
   >
     <!-- Image -->
