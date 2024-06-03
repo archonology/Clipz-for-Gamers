@@ -3,16 +3,24 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   background-color: #161d31;
+} */
+
+body {
+  background-color: #070707;
 }
 
 .material-icons.text-base {
   font-size: inherit;
 }
 
-.bg-secondary {
+/* .bg-secondary {
   background-color: #283046;
+} */
+
+.bg-secondary {
+  background-color: #17171a;
 }
 
 .bg-gradient {

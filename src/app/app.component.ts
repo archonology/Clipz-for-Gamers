@@ -5,7 +5,7 @@ import { UserModule } from './user/user.module';
 import { NavComponent } from './nav/nav.component';
 import { AuthModalComponent } from './user/auth-modal/auth-modal.component';
 import { AuthService } from './services/auth.service';
-// import { VideoModule } from './video/video.module';
+import { VideoModule } from './video/video.module';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 
@@ -19,7 +19,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     UserModule,
     NavComponent,
     AuthModalComponent,
-    // VideoModule,
+    VideoModule,
     AngularFireStorageModule
   ],
   templateUrl: './app.component.html',
