@@ -4,12 +4,13 @@ import videojs from 'video.js'
 import IClip from '../models/clip.model';
 import { DatePipe } from '@angular/common';
 import { FbTimestampPipe } from '../pipes/fb-timestamp.pipe';
+import { ClipsListComponent } from '../clips-list/clips-list.component';
 
 
 @Component({
   selector: 'app-clip',
   standalone: true,
-  imports: [FbTimestampPipe],
+  imports: [FbTimestampPipe, ClipsListComponent],
   templateUrl: './clip.component.html',
   styleUrl: './clip.component.css',
   encapsulation: ViewEncapsulation.None,
