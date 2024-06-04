@@ -23,7 +23,6 @@ export class ModalComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.modal.unregister('userForm')
-    document.body.removeChild(this.el.nativeElement)
 
   }
 
