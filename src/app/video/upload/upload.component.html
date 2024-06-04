@@ -66,10 +66,6 @@
       </ng-container>
       <!-- Video Editor -->
       <ng-template #uploadFormCtr>
-        <app-alert *ngIf="showAlert" [color]="alertColor">
-          <p>{{ alertMsg }}</p>
-          <p *ngIf="showPercentage">{{ percentage | percent }}</p>
-        </app-alert>
         <!-- Form -->
         <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
           <!-- Screenshots -->
@@ -109,6 +105,10 @@
               Publish
             </button>
           </div>
+                  <app-alert *ngIf="showAlert" [color]="alertColor">
+          <p>{{ alertMsg }}</p>
+          <p *ngIf="showPercentage">{{ percentage | percent }}</p>
+        </app-alert>
         </form>
       </ng-template>
     </ng-template>
