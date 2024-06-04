@@ -85,7 +85,7 @@ export class ClipService implements Resolve<IClip | null> {
       const lastDoc = doc(clipsCollection, lastDocID)
       runQuery = query(clipsCollection, orderBy(
         'timestamp', 'desc'
-      ), limit(6), startAfter(lastDoc))
+      ), startAfter(lastDoc))
     }
 
     const snapshot = await getDocs(runQuery)
