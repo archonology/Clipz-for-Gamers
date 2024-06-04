@@ -77,7 +77,7 @@ export class AuthService {
     await this.auth.signOut()
     if (this.redirect) {
       // this navigateByUrl method needs an absolute path
-    await this.router.navigateByUrl('/')
+      await this.router.navigateByUrl('/')
     }
 
   }

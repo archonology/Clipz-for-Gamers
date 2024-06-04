@@ -111,11 +111,60 @@
             "scripts": [],
             "karmaConfig": "karma.conf.js"
           }
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "clipz:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "clipz:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false
+          }
+        },
+        "ct": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "clipz:serve",
+            "watch": true,
+            "headless": false,
+            "testingType": "component"
+          },
+          "configurations": {
+            "development": {
+              "devServerTarget": "clipz:serve:development"
+            }
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "clipz:serve",
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "clipz:serve:production"
+            }
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "5ce5fd7a-c621-42b7-9018-6bfd2dce654d"
+    "analytics": "5ce5fd7a-c621-42b7-9018-6bfd2dce654d",
+    "schematicCollections": [
+      "@cypress/schematic",
+      "@schematics/angular"
+    ]
   }
 }
