@@ -36,8 +36,15 @@ describe('NavComponent', () => {
   });
 
   it('should logout', () => {
+    // logout li is third in the nav list
     const logoutLink = fixture.debugElement.query(By.css('li:nth-child(3) a'))
 
     expect(logoutLink).withContext('Not logged in').toBeTruthy();
+    //Test the click functionality for logging out
+    logoutLink.triggerEventHandler('click');
+
+    const service = TestBed.inject(AuthService);
+
+    expect(service.logout).withContext('Could not click logout link').toHaveBeenCalledTimes(1);
   })
 });
