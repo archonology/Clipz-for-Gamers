@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 import { NavComponent } from './nav.component';
 import { AuthService } from '../services/auth.service';
+// RouterTestingModule is depreciated, but Angular documentation on replacing the method for testing with provideRoute is lacking at the time of this test creation. see more at https://v17.angular.io/api/router/testing/RouterTestingModule It seems like some refactoring in the nav component is necessary to implement a new testing method for route handling.
 import { RouterTestingModule } from "@angular/router/testing";
 
 describe('NavComponent', () => {
@@ -12,7 +14,7 @@ describe('NavComponent', () => {
     'createUser', 'logout'
   ], {
     // set auth to always true with rxjs of method
-    isAuthenticated$: of(true)
+    isAuthenticatedWithDelay$: of(true)
   })
 
   beforeEach(async () => {
@@ -32,4 +34,10 @@ describe('NavComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should logout', () => {
+    const logoutLink = fixture.debugElement.query(By.css('li:nth-child(3) a'))
+
+    expect(logoutLink).withContext('Not logged in').toBeTruthy();
+  })
 });
