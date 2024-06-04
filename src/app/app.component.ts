@@ -10,6 +10,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 
 @Component({
+
   selector: 'app-root',
   standalone: true,
   imports: [
@@ -26,6 +27,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
+  title = 'clipz'
   constructor(public auth: AuthService) {
 
   }
