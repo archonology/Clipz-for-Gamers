@@ -41,8 +41,13 @@ describe('TabsContainerComponent', () => {
 
     const tabsProp = containerComponent.componentInstance.tabs;
 
-    expect(tabs.length).toBe(2);
-    expect(tabsProp.length).toBe(2);
+    // create custom assertions if running multiple tests on the same variable
+    expect(tabs.length)
+      .withContext('Tabs did not render')
+      .toBe(2);
+    expect(tabsProp.length)
+      .withContext('Could not grab component property.')
+      .toBe(2);
   })
 
 });
